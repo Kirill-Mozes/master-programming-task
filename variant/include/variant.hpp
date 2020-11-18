@@ -48,31 +48,31 @@ struct variant_decorator : public std::variant<Types...>
 {
     using std::variant<Types...>::variant;
 
-    template<typename ReturnType> 
-    ReturnType& as()
+    template<typename RetType> 
+    RetType& as()
     {
         
-        if constexpr (std::disjunction_v<std::is_same<boost::recursive_wrapper<ReturnType>, Types>...>)
+        if constexpr (std::disjunction_v<std::is_same<boost::recursive_wrapper<RetType>, Types>...>)
         {
-            return std::get<boost::recursive_wrapper<ReturnType>>(*this).get();
+            return std::get<boost::recursive_wrapper<RetType>>(*this).get();
         }
         else
         {
-            return std::get<ReturnType>(*this);
+            return std::get<RetType>(*this);
         }
     }
 
     
-    template<typename ReturnType>
-    ReturnType as() const
+    template<typename RetType>
+    RetType as() const
     {
-        if constexpr (std::disjunction_v<std::is_same<boost::recursive_wrapper<ReturnType>, Types>...>)
+        if constexpr (std::disjunction_v<std::is_same<boost::recursive_wrapper<RetType>, Types>...>)
         {
-            return std::get<boost::recursive_wrapper<ReturnType>>(*this).get();
+            return std::get<boost::recursive_wrapper<RetType>>(*this).get();
         }
         else
         {
-            return std::get<ReturnType>(*this);
+            return std::get<RetType>(*this);
         }
     }
 
