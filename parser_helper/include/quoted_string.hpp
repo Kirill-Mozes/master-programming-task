@@ -14,7 +14,13 @@ namespace parser
     namespace x3 = boost::spirit::x3;
 
     //{ should be only one line
-    ... quated_string = ...
+
+   
+    auto const quoted_string = x3::rule<class quoted_string, std::string>{} =
+    '"' >> x3::no_skip[*((x3::char_ - (x3::lit('\\') | '"')) | ('\\' >> x3::char_('"')))] >> '"';
+
+    //auto const simple_concat = x3::lexeme[x3::char_ >> x3::char_];
+    //auto const simple_quote = x3::rule<class quoted_string, std::string>{} = x3::lexeme[x3::char_("\n")];
     //}
 }
 
