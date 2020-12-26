@@ -30,27 +30,42 @@ namespace detail
 
 //? What is wrong with ``*this[i]``?
 //{
-template<???>
-class type_map: public ???
+template<typename K, typename ...Args>
+class type_map: public std::array<K, sizeof...(Args)>
 {
-public:
-    using types = ...
+    public:
+    using TypeMValue = K;
 
     template<class T>
-    ?? as()
+    K& as()
     {
-        return ...
+        return this->operator[](detail::type_to_index<T, std::tuple<Args...>>::v);
+    }
+
+    template<class T>
+    K as() const
+    {
+        return this->operator[](detail::type_to_index<T, std::tuple<Args...>>::v);
     }
 };
+
 //}
 
 namespace std
 {
     template<typename T, class TypeMap>
-    ?? get(??TypeMap?? tm)
+    typename TypeMap::TypeMValue get(const TypeMap& tm)
     {
         //{ How to call ``as``?
-        return ???
+        return tm.template as<T>();
+        //}
+    }
+
+    template<typename T, class TypeMap>
+    typename TypeMap::TypeMValue& get(TypeMap& tm)
+    {
+        //{ How to call ``as``?
+        return tm.template as<T>();
         //}
     }
 }
